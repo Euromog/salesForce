@@ -8,8 +8,7 @@ public class DropDown extends BaseElements {
     String optionLocator = "//*[@class='select-options']/descendant::a[contains(text(),'%s')]";
 
     public DropDown(WebDriver driver, String label) {
-        super.driver = driver;
-        super.label = label;
+        super(driver, label);
     }
 
     public DropDown select(String option) {

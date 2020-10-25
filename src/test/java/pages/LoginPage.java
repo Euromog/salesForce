@@ -1,10 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 
 public class LoginPage extends BasePage {
     public static final By SIGN_IN_BUTTON = By.id("Login");
@@ -30,11 +27,7 @@ public class LoginPage extends BasePage {
 
     @Override
     public LoginPage isPageOpened() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(SIGN_IN_BUTTON));
-        } catch (TimeoutException e) {
-            Assert.fail("Login page is not opened");
-        }
+        waiter(SIGN_IN_BUTTON, 20, "Login page is not opened.  Locator" + SIGN_IN_BUTTON + " is not found");
         return this;
     }
 }

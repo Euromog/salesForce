@@ -1,10 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 
 public class HomePage extends BasePage {
     public static final By MY_ACCOUNTS_LOCATOR = By.cssSelector("[title='My Accounts']");
@@ -20,11 +17,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage isPageOpened() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(MY_ACCOUNTS_LOCATOR));
-        } catch (TimeoutException e) {
-            Assert.fail("Home page is not opened");
-        }
+        waiter(MY_ACCOUNTS_LOCATOR, 20, "Home page is not opened");
         return this;
     }
 }

@@ -2,13 +2,11 @@ package pages;
 
 import elements.DropDown;
 import elements.Input;
+import elements.InputWithSearch;
 import elements.TextArea;
 import models.Account;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 
 public class NewAccountModal extends BasePage {
     public static final By SAVE_BUTTON = By.cssSelector("[title=Save]");
@@ -26,43 +24,37 @@ public class NewAccountModal extends BasePage {
     }
 
     public NewAccountModal isPageOpened() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON));
-        } catch (TimeoutException e) {
-            Assert.fail("New Account modal page is not opened");
-        }
+        waiter(SAVE_BUTTON, 20, "New Account modal page is not opened");
         return this;
     }
 
-    public AccountDetails create(Account account) {
-        //new Input(driver, "Account Name").write(account.getName()); //move to inputAndSearch class
-        new Input(driver, "Account Name").write(account.getName());
+    public AccountDetailsPage create(Account account) {
+        new InputWithSearch(driver, "Account Name").inputAndSearch(account.getName());
         new DropDown(driver, "Type").select(account.getType());
         new Input(driver, "Website").write(account.getWebSite());
         new TextArea(driver, "Description").write(account.getDescription());
-
         new Input(driver, "Phone").write(account.getPhone());
         new DropDown(driver, "Industry").select(account.getIndustry());
         new Input(driver, "Employees").write(String.valueOf(account.getEmployees()));
-
+        new InputWithSearch(driver, "Billing Address").search(account.getBillingAddress());
         new TextArea(driver, "Billing Street").write(account.getBillingStreet());
-        new Input(driver, "Billing City").write(account.getBillingCity()); //BUG!!!!!!!!!!!
+        new Input(driver, "Billing City").write(account.getBillingCity());
         new Input(driver, "Billing State/Province").write(account.getBillingState());
         new Input(driver, "Billing Zip/Postal Code").write(account.getBillingZip());
         new Input(driver, "Billing Country").write(account.getBillingCountry());
-        // Search
+        new InputWithSearch(driver, "Shipping Address").search(account.getShippingAddress());
         new TextArea(driver, "Shipping Street").write(account.getShippingStreet());
         new Input(driver, "Shipping City").write(account.getShippingCity());
         new Input(driver, "Shipping State/Province").write(account.getShippingState());
         new Input(driver, "Shipping Zip/Postal Code").write(account.getShippingZip());
         new Input(driver, "Shipping Country").write(account.getShippingCountry());
         clickSave();
-        return new AccountDetails(driver);
+        return new AccountDetailsPage(driver);
     }
 
-    public AccountDetails clickSave() {
+    public AccountDetailsPage clickSave() {
         driver.findElement(SAVE_BUTTON).click();
-        return new AccountDetails(driver);
+        return new AccountDetailsPage(driver);
     }
 
     public AccountListPage clickCancel() {
@@ -75,9 +67,9 @@ public class NewAccountModal extends BasePage {
         return this;
     }
 
-    public AccountDetails clickCancelAfterSaveAndNewButton() {
+    public AccountDetailsPage clickCancelAfterSaveAndNewButton() {
         driver.findElement(CANCEL_BUTTON).click();
-        return new AccountDetails(driver);
+        return new AccountDetailsPage(driver);
     }
 }
 
